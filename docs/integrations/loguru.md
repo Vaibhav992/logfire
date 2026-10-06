@@ -67,10 +67,8 @@ logfire.configure()
 
 logger.configure(handlers=[logfire.loguru_handler()])
 
-# Tag a single record:
 logger.info('Order placed', **{'logfire.tags': ['checkout']})
 
-# Tag every record logged through this logger:
 checkout_logger = logger.bind(**{'logfire.tags': ['checkout']})
 checkout_logger.info('Payment received')
 ```
