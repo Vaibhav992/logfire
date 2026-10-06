@@ -365,3 +365,31 @@ def test_logging_non_string(exporter: TestExporter, logger: Logger):
             }
         ]
     )
+
+
+def test_stdlib_logging_tags(exporter: TestExporter, logger: Logger) -> None:
+    logger.error('Payment failed', extra={'logfire.tags': ['foo', 'bar']})
+
+    assert exporter.exported_spans_as_dict() == snapshot(
+        [
+            {
+                'name': 'Payment failed',
+                'context': {'trace_id': 1, 'span_id': 1, 'is_remote': False},
+                'parent': None,
+                'start_time': 1000000000,
+                'end_time': 1000000000,
+                'attributes': {
+                    'logfire.span_type': 'log',
+                    'logfire.level_num': 17,
+                    'logfire.msg_template': 'Payment failed',
+                    'logfire.msg': 'Payment failed',
+                    'code.filepath': 'test_stdlib_logging.py',
+                    'code.function': 'test_stdlib_logging_tags',
+                    'code.lineno': 123,
+                    'logfire.logger_name': 'tests.test_stdlib_logging',
+                    'logfire.json_schema': '{"type":"object","properties":{"logfire.logger_name":{}}}',
+                    'logfire.tags': ('foo', 'bar'),
+                },
+            }
+        ]
+    )

@@ -92,6 +92,25 @@ Within a few seconds you'll see your message as a record.
 
 ## Advanced
 
+### Tags
+
+[Tags](../reference/sql.md#tags) are short labels that group related records together. Each one is shown
+as a colored bubble after the message in the Live view. To tag a log record, pass a list of strings under
+the `logfire.tags` key of the `extra` argument:
+
+```py title="main.py" skip-run="true" skip-reason="global-state"
+from logging import basicConfig, getLogger
+
+import logfire
+
+logfire.configure()
+basicConfig(handlers=[logfire.LogfireLoggingHandler()])
+
+logger = getLogger(__name__)
+
+logger.error('Payment failed', extra={'logfire.tags': ['checkout']})
+```
+
 ### Quiet a noisy logger
 
 Logging can be too verbose, especially from third-party libraries.

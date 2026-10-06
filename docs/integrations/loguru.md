@@ -52,6 +52,29 @@ Within a few seconds you'll see your message as a record.
 
 ## Advanced
 
+### Tags
+
+[Tags](../reference/sql.md#tags) are short labels that group related records together. Each one is shown
+as a colored bubble after the message in the Live view. To tag a Loguru record, set a field named
+`logfire.tags` to a list of strings, either on one call or on every call made through a bound logger:
+
+```py title="main.py"
+from loguru import logger
+
+import logfire
+
+logfire.configure()
+
+logger.configure(handlers=[logfire.loguru_handler()])
+
+# Tag a single record:
+logger.info('Order placed', **{'logfire.tags': ['checkout']})
+
+# Tag every record logged through this logger:
+checkout_logger = logger.bind(**{'logfire.tags': ['checkout']})
+checkout_logger.info('Payment received')
+```
+
 ### Scrubbing
 
 !!! note
